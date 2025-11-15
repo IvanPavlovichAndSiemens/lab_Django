@@ -18,4 +18,5 @@ from django.urls import path, include  #додано include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('app_blog.urls')),  #додано новий рядок
 ]
