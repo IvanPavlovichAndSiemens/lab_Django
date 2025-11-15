@@ -1,38 +1,48 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <title>Blog</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-</head>
-<body>
-    <h1>Мій блог</h1>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 
-    <h2>Категорії</h2>
-    {% if categories %}
-        {% for item in categories %}
-        <div>
-            <a href="{{ item.get_absolute_url }}">
-                <h4>{{ item.category }}</h4>
+<div class="row">
+    <!-- Блок категорій -->
+    <div class="col-md-4">
+        <h3>Категорії</h3>
+        {% if categories %}
+        <div class="list-group">
+            {% for category in categories %}
+            <a href="{{ category.get_absolute_url }}" class="list-group-item list-group-item-action">
+                {{ category.category }}
+                <small class="text-muted">({{ category.articles.count }} публікацій)</small>
             </a>
+            {% endfor %}
         </div>
-        {% endfor %}
-    {% endif %}
+        {% endif %}
+    </div>
 
-    <h2>Останні публікації</h2>
-    {% if articles %}
+    <!-- Блок останніх публікацій -->
+    <div class="col-md-8">
+        <h3>Останні публікації</h3>
+        {% if articles %}
         {% for item in articles %}
-        <div>
-            <a href="{{ item.get_absolute_url }}">
-                <h4>{{ item.title }}</h4>
-            </a>
-            <h5>{{ item.pub_date|date:"j E Y"|safe|linebreaks }}</h5>
-            <p>{{ item.description|safe|escape|striptags|truncatewords_html:32 }}</p>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    {{ item.pub_date|date:"j E Y" }}
+                    {% if item.category %}
+                    <span class="badge badge-primary">{{ item.category.category }}</span>
+                    {% endif %}
+                </h6>
+                <p class="card-text">{{ item.description|safe|escape|striptags|truncatewords_html:50 }}</p>
+                <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-outline-primary">Читати далі</a>
+            </div>
         </div>
         {% endfor %}
-    {% endif %}
+        {% endif %}
 
-    <a href="{% url 'articles-list' %}">
-        <h4>Всі публікації</h4>
-    </a>
-</body>
-</html>
+        <a href="{% url 'articles-list' %}" class="btn btn-primary">Всі публікації</a>
+    </div>
+</div>
+
+{% endblock %}

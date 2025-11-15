@@ -39,9 +39,10 @@ class ArticleAdmin(admin.ModelAdmin):
     multiupload_list = False
     prepopulated_fields = {'slug': ('title',)}
     raw_id_fields = ('category',)
+
     fieldsets = (
         ('', {
-            'fields': ('pub_date', 'title', 'description', 'main_page'),
+            'fields': ('pub_date', 'title', 'description', 'main_page', 'category'),
         }),
         ('Додатково', {
             'classes': ('grp-collapse grp-closed',),

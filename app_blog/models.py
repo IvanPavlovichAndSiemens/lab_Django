@@ -18,6 +18,7 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         try:
+            # Цей метод має вести на СПИСОК публікацій категорії
             url = reverse('articles-category-list', kwargs={'slug': self.slug})
         except:
             url = "/"
@@ -25,18 +26,21 @@ class Category(models.Model):
 
 
 class Article(models.Model):
-    title = models.CharField('Заголовок', max_length=250,
-                             help_text='Максимум 250 сим.')
+    title = models.CharField('Заголовок', max_length=250, help_text='Максимум 250 сим.')
     description = models.TextField(blank=True, verbose_name='Опис')
     pub_date = models.DateTimeField('Дата публікації', default=timezone.now)
     slug = models.SlugField('Слаг', unique_for_date='pub_date')
 
-    main_page = models.BooleanField('Головна', default=False,
-                                    help_text='Показувати')
-    category = models.ForeignKey(Category, related_name='news',
-                                 blank=True, null=True,
+    main_page = models.BooleanField('Головна', default=False, help_text='Показувати')
+
+    # ЦЕ ПОЛЕ МАЄ БУТИ - перевірте його наявність
+    category = models.ForeignKey(Category,
+                                 related_name='articles',
+                                 blank=True,
+                                 null=True,
                                  verbose_name='Категорія',
                                  on_delete=models.CASCADE)
+
     objects = models.Manager()
 
     class Meta:

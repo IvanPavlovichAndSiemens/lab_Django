@@ -1,29 +1,58 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <title>Публікації</title>
-</head>
-<body>
-    Публікації <br/>
-    {% if category %} {{ category }} {% endif %}
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 
-    {% for item in items %}
-    <div class="articles-row">
-        <a href="{{ item.get_absolute_url }}">
-            <h4>{{ item.title }}</h4>
-        </a>
-        <h5>{{ item.pub_date|date:"j E Y"|safe|linebreaks }}</h5>
-        <p>{{ item.description|safe|escape|striptags|truncatewords_html:32 }}</p>
-        {% if item.images.all %}
-        <div class="container-image">
-            <img class="img" src="{{ item.images.all.0.image.url }}" alt="" />
-        </div>
+<div class="container">
+    <h1>
+        {% if category %}
+            Публікації категорії: "{{ category.category }}"
+        {% else %}
+            Всі публікації
         {% endif %}
-        <div class='clearfix'></div>
-    </div>
-    {% endfor %}
+    </h1>
 
-    <a href="/">← На головну</a>
-</body>
-</html>
+    {% if category %}
+    <div class="alert alert-info">
+        Показано публікації категорії: <strong>{{ category.category }}</strong>
+        <a href="{% url 'articles-list' %}" class="btn btn-sm btn-outline-primary ml-3">
+            Всі публікації
+        </a>
+    </div>
+    {% endif %}
+
+    {% if items %}
+    <div class="row">
+        {% for item in items %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                {% if item.images.all %}
+                <img src="{{ item.images.all.0.image.url }}" class="card-img-top" alt="{{ item.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                    </h5>
+                    <p class="card-text">{{ item.description|safe|escape|striptags|truncatewords_html:30 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">{{ item.pub_date|date:"d.m.Y" }}</small>
+                        {% if item.category %}
+                        <span class="badge badge-secondary">{{ item.category.category }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        {% if category %}
+            В категорії "{{ category.category }}" ще немає публікацій.
+        {% else %}
+            Публікації відсутні.
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

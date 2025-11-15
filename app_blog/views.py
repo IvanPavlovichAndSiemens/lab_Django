@@ -52,5 +52,23 @@ class ArticleList(ListView):
 
 class ArticleCategoryList(ArticleList):
     def get_queryset(self, *args, **kwargs):
-        articles = Article.objects.filter(category__slug__in=[self.kwargs['slug']]).distinct()
+        articles = Article.objects.filter(
+            category__slug=self.kwargs['slug']
+        ).distinct()
         return articles
+
+
+class CategoryMainArticleView(DetailView):
+    model = Category
+    template_name = 'category_main.html'
+    context_object_name = 'category'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = self.get_object()
+        # Знайти головну публікацію категорії
+        context['main_article'] = Article.objects.filter(
+            category=category,
+            main_page=True
+        ).first()
+        return context
