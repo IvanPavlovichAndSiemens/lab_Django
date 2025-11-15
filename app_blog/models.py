@@ -18,7 +18,10 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         try:
+<<<<<<< HEAD
             # Цей метод має вести на СПИСОК публікацій категорії
+=======
+>>>>>>> f313550be5bd4149964152af4e173e8586d50ae5
             url = reverse('articles-category-list', kwargs={'slug': self.slug})
         except:
             url = "/"

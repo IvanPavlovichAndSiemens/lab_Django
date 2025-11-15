@@ -52,6 +52,7 @@ class ArticleList(ListView):
 
 class ArticleCategoryList(ArticleList):
     def get_queryset(self, *args, **kwargs):
+<<<<<<< HEAD
         articles = Article.objects.filter(
             category__slug=self.kwargs['slug']
         ).distinct()
@@ -72,3 +73,7 @@ class CategoryMainArticleView(DetailView):
             main_page=True
         ).first()
         return context
+=======
+        articles = Article.objects.filter(category__slug__in=[self.kwargs['slug']]).distinct()
+        return articles
+>>>>>>> f313550be5bd4149964152af4e173e8586d50ae5
