@@ -46,6 +46,7 @@
     <filter-actions connection-id="c5f7448b-b173-4549-87fb-d94deb0b31a8" dataset="main.sqlite_sequence" active-filter-id="" />
     <filter-actions connection-id="c5f7448b-b173-4549-87fb-d94deb0b31a8" dataset="main.auth_group_permissions" active-filter-id="" />
     <filter-actions connection-id="c5f7448b-b173-4549-87fb-d94deb0b31a8" dataset="main.django_session" active-filter-id="" />
+    <filter-actions connection-id="c5f7448b-b173-4549-87fb-d94deb0b31a8" dataset="main.django_admin_log" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
